@@ -1,0 +1,15 @@
+#need to run the command below on mgmt server to allow basic auth
+#Set-Item -Path WSMan:\localhost\Service\Auth\Basic -Value $true
+#
+all:
+  children:
+    hcimanager:
+      hosts:
+        hcimgmt_server:
+          ansible_host: 172.16.135.25
+          ansible_port: 5985
+          ansible_user: azureuser
+          ansible_password: password
+          ansible_connection: winrm
+          ansible_winrm_transport: basic
+          ansible_winrm_server_cert_validation: ignore

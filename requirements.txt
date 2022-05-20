@@ -1,0 +1,4 @@
+ansible==2.10.6
+ansible-galaxy-local-deps
+pywinrm
+jinja2>=2.8

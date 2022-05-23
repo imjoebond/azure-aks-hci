@@ -1,15 +1,28 @@
 - name: Configured Azure HCI AKS
   hosts: hcimanager
+  #connection: local
   gather_facts: false
 
+  vars_files: 
+    - vars/cluster_vars.yml
+
   tasks:
-  - name: powershell Initialize AksHciNode
-    ignore_errors: True
-    ansible.windows.win_powershell: 
-      script: |
-        Get-AksHciNodePool -clusterName akshciclus001
-    register: homedir_out
-      
-  - name: print init output
-    debug:
-      msg: "init status:  {{ homedir_out }}"
+  - name:
+    delegate_to: localhost
+    template:
+      src: aks_hci_deploy.ps1.j2
+      dest: aks_hci_deploy.ps1
+  - name: create script directory
+    win_file:
+      path: "{{ pwshScriptHome }}"
+      state: directory
+  - name: Copy install dependencies powershell script
+    ansible.windows.win_copy:
+      src: files/installDependencies.ps1
+      dest: "{{ pwshScriptHome }}\\installDependencies.ps1"
+      backup: yes
+  - name: Copy AKS cluster create powershell script
+    ansible.windows.win_copy:
+      src: aks_hci_deploy.ps1
+      dest: "{{ pwshScriptHome }}\\createCluster.ps1"
+      backup: yes

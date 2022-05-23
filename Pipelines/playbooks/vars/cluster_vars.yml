@@ -1,0 +1,40 @@
+pwshScriptHome: "C:\\temp\\scripts"
+vnetName: mgmtvnet
+#external vswitch name
+vSwitchName: InternalNAT
+#first IP address for your VIP Pool
+vipPoolStart: 192.168.0.150
+#last IP address for your VIP Pool
+vipPoolEnd: 192.168.0.250
+#first IP for the kubernetes nodes IP pool
+k8sNodeIpPoolStart: 192.168.0.3
+#last IP for the kubernetes nodes IP pool
+k8sNodeIpPoolEnd: 192.168.0.149
+#Network range in CIDR
+ipAddressPrefix: 192.168.0.0/16
+#IP address for your networks gateway
+gateway: 192.168.0.1
+#static IP address that will be assigned to your DNS server
+dnsServers: 192.168.0.1
+#AKS Drive for Config
+aksDrive: "V:\\"
+aksDir: "{{ aksDrive }}\\AKS-HCI"
+#Provide a path to the directory where AKS on Azure Stack HCI will store its VHD images
+imageDir: "{{ aksDir }}\\Images"
+#path to the directory where the cloud agent will store its configuration
+cloudConfigLocation: "{{ aksDir }}\\Config"
+#name for your AKS cluster
+clusterName: testCluster
+#number of Linux node VMs for your cluster
+linuxNodeCount: 2
+resourceGroup: AksHciAzureEval
+#Azure region to connect your Azure Arc enabled Kubernetes
+location: us-east-1
+#subscription to connect your Azure Arc enabled Kubernetes
+subscriptionId: "{{ lookup('env', 'SUBSCRIPTION_ID') }}"
+#appID of the service principal created
+appId: "{{ lookup('env', 'APP_ID') }}"
+#password of the service principal created
+service_principal_password: "{{ lookup('env', 'CLIENT_SECRET') }}"
+#tenantID
+tenantId: "{{ lookup('env', 'TENANT_ID') }}"

@@ -24,7 +24,7 @@ $imageDir = '{{ imageDir }}'
 #path to the directory where the cloud agent will store its configuration
 $cloudConfigLocation = '{{ cloudConfigLocation }}'
 #name for your AKS cluster
-$clusterName = '{{ clusterName }}'
+$clusterName = '{{ clusterName }}'.toLower()
 #number of Linux node VMs for your cluster
 $linuxNodeCount = '{{ linuxNodeCount }}'
 

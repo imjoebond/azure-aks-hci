@@ -1,5 +1,7 @@
 #need to run the command below on mgmt server to allow basic auth
-#Set-Item -Path WSMan:\localhost\Service\Auth\Basic -Value $true
+#winrm set winrm/config/Client '@{AllowUnencrypted = "true"}'
+#winrm set winrm/config/Service '@{AllowUnencrypted = "true"}'
+#winrm set winrm/config/Service/Auth '@{Basic = "true"}'
 #
 all:
   children:

@@ -1,0 +1,75 @@
+# PowerShell script to deploy an AKS cluster on HCI
+
+#Environment variables to set up your AKS on HCI cluster
+#name of the virtual switch to connect the virtual machines to
+$vnetName= '{{ vnetName }}'
+#external vswitch name
+$vSwitchName= '{{ vSwitchName }}'
+#first IP address for your VIP Pool
+$vipPoolStart= '{{ vipPoolStart }}'
+#last IP address for your VIP Pool
+$vipPoolEnd= '{{ vipPoolEnd }}'
+#first IP for the kubernetes nodes IP pool
+$k8sNodeIpPoolStart= '{{ k8sNodeIpPoolStart }}'
+#last IP for the kubernetes nodes IP pool
+$k8sNodeIpPoolEnd= '{{ k8sNodeIpPoolEnd }}'
+#Network range in CIDR
+$ipAddressPrefix= '{{ ipAddressPrefix }}' 
+#IP address for your networks gateway
+$gateway= '{{ gateway }}'
+#static IP address that will be assigned to your DNS server
+$dnsServers= '{{ dnsServers }}'
+#Provide a path to the directory where AKS on Azure Stack HCI will store its VHD images
+$imageDir = '{{ imageDir }}'
+#path to the directory where the cloud agent will store its configuration
+$cloudConfigLocation = '{{ cloudConfigLocation }}'
+#name for your AKS cluster
+$clusterName = '{{ clusterName }}'.toLower()
+#number of Linux node VMs for your cluster
+$linuxNodeCount = '{{ linuxNodeCount }}'
+
+#Environment variables to onboard the cluster on Azure Arc 
+#resource group to connect your Azure Arc enabled Kubernetes
+$resourceGroup = '{{ resourceGroup }}'
+#Azure region to connect your Azure Arc enabled Kubernetes
+$location = '{{ location }}'
+#subscription to connect your Azure Arc enabled Kubernetes
+$subscriptionId = '{{ subscriptionId }}'
+#appID of the service principal created
+$appId = '{{ appId }}'
+#password of the service principal created
+$password = '{{ service_principal_password }}'
+#tenantID
+$tenant = '{{ tenantId }}'
+
+# AKS deployment on HCI 
+
+
+If(!(test-path $imageDir))
+{
+      New-Item -ItemType Directory -Force -Path $imageDir
+}
+
+If(!(test-path $cloudConfigLocation))
+{
+      New-Item -ItemType Directory -Force -Path $cloudConfigLocation
+}
+
+$vnet = New-AksHciNetworkSetting -Name $vnetName -vSwitchName $vSwitchName -gateway $gateway -dnsservers $dnsServers `
+    -ipaddressprefix $ipAddressPrefix -k8snodeippoolstart $k8sNodeIpPoolStart -k8snodeippoolend $k8sNodeIpPoolEnd `
+    -vipPoolStart $vipPoolStart -vipPoolEnd $vipPoolEnd
+
+Set-AksHciConfig -vnet $vnet -imageDir $imageDir -cloudConfigLocation $cloudConfigLocation -Verbose
+
+$passwordsecure = ConvertTo-SecureString $password -AsPlainText -Force
+$pscredential = New-Object -TypeName System.Management.Automation.PSCredential($appId, $passwordsecure)
+Connect-AzAccount -ServicePrincipal -Credential $pscredential -Tenant $tenant
+Register-AzResourceProvider -ProviderNamespace Microsoft.Kubernetes
+Register-AzResourceProvider -ProviderNamespace Microsoft.KubernetesConfiguration
+
+Select-AzSubscription -SubscriptionId $subscriptionId
+
+Set-AksHciRegistration -SubscriptionId $subscriptionId -ResourceGroupName $resourceGroup -TenantId $tenant -Credential $pscredential
+
+Install-AksHci
+

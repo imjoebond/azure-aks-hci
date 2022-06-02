@@ -1,0 +1,23 @@
+- name: Configured Azure HCI AKS
+  hosts: hcimanager
+  #connection: local
+  gather_facts: false
+
+  vars_files: 
+    - vars/cluster_vars.yml
+
+  tasks:
+  - name: create script directory
+    win_file:
+      path: "{{ pwshScriptHome }}"
+      state: directory
+  - name: install base dependencies
+    ansible.windows.win_powershell:
+      script: |
+        Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted
+        Install-PackageProvider -Name NuGet -Force -Confirm:$false
+        Install-Module -Name PowershellGet -Force -Confirm:$false
+  - name: install AksHci module
+    ansible.windows.win_powershell:
+      script: |
+        Install-Module -Name AksHci -Repository PSGallery -AcceptLicense -Force -Confirm:$false

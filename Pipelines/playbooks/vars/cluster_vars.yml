@@ -28,7 +28,8 @@ clusterName: testarchciakscluster
 #name of node pool
 nodePoolName: testlinuxnodepool
 #number of Linux node VMs for your cluster
-linuxNodeCount: 2
+nodeCount: 2
+osType: 'Linux'
 resourceGroup: 'aks-poc-resources'
 #Azure region to connect your Azure Arc enabled Kubernetes
 location: centralus

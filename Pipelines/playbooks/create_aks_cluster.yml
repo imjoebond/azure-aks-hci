@@ -23,4 +23,8 @@
     template:
       src: create_aks_cluster.ps1.j2
       dest: "{{ pwshScriptHome }}\\create_aks_cluster.ps1"
+  - name: Create AKS cluster
+    ansible.windows.win_shell: "{{ pwshScriptHome }}\\create_aks_cluster.ps1 >> {{ pwshScriptHome }}\\create_aks_cluster.txt"
+    args:
+      chdir: "{{ pwshScriptHome }}"
       

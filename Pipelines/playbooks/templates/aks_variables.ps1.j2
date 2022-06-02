@@ -23,8 +23,10 @@ $imageDir = '{{ imageDir }}'
 $cloudConfigLocation = '{{ cloudConfigLocation }}'
 #name for your AKS cluster
 $clusterName = '{{ clusterName }}'.toLower()
+$nodePoolName = '{{ nodePoolName }}'.toLower()
 #number of Linux node VMs for your cluster
-$linuxNodeCount = '{{ linuxNodeCount }}'
+$nodeCount = '{{ nodeCount }}'
+$osType = '{{ osType }}'
 
 #Environment variables to onboard the cluster on Azure Arc 
 #resource group to connect your Azure Arc enabled Kubernetes

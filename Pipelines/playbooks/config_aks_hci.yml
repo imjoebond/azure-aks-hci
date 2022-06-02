@@ -11,10 +11,6 @@
     win_file:
       path: "{{ pwshScriptHome }}"
       state: directory
-  - name: Copy install dependencies powershell script
-    ansible.windows.win_copy:
-      src: files/installDependencies.ps1
-      dest: "{{ pwshScriptHome }}\\installDependencies.ps1"
   - name: write aks env variables file
     template:
       src: aks_variables.ps1.j2
@@ -23,4 +19,12 @@
     template:
       src: config_aks_hci.ps1.j2
       dest: "{{ pwshScriptHome }}\\config_aks_hci.ps1"
+  - name: copy dependency file(may deprecate for install_dependencies.yml playbook)
+    ansible.windows.win_copy:
+      src: files/installDependencies.ps1
+      dest: "{{ pwshScriptHome }}\\installDependencies.ps1"
+  - name: Install AksHci
+    ansible.windows.win_shell: "{{ pwshScriptHome }}\\config_aks_hci.ps1 >> {{ pwshScriptHome }}\\config_aks_hci.txt"
+    args:
+      chdir: "{{ pwshScriptHome }}"
 

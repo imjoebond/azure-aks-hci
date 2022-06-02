@@ -10,18 +10,17 @@
   - name:
     delegate_to: localhost
     template:
-      src: create_aks_cluster.ps1.j2
-      dest: create_aks_cluster.ps1
+      src: remove_aks_cluster.ps1.j2
+      dest: remove_aks_cluster.ps1
   - name: create script directory
     win_file:
       path: "{{ pwshScriptHome }}"
       state: directory
-  - name: Copy install dependencies powershell script
+  - name: write aks env variables file
+    template:
+      src: aks_variables.ps1.j2
+      dest: "{{ pwshScriptHome }}\\aks_variables.ps1"
+  - name: Remove AKS Cluster powershell script
     ansible.windows.win_copy:
-      src: files/installDependencies.ps1
-      dest: "{{ pwshScriptHome }}\\installDependencies.ps1"
-      backup: yes
-  - name: Copy AKS New Cluster powershell script
-    ansible.windows.win_copy:
-      src: create_aks_cluster.ps1
-      dest: "{{ pwshScriptHome }}\\create_aks_cluster.ps1"
+      src: remove_aks_cluster.ps1
+      dest: "{{ pwshScriptHome }}\\remove_aks_cluster.ps1"

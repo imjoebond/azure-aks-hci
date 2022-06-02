@@ -7,11 +7,6 @@
     - vars/cluster_vars.yml
 
   tasks:
-  - name:
-    delegate_to: localhost
-    template:
-      src: config_aks_hci.ps1.j2
-      dest: config_aks_hci.ps1
   - name: create script directory
     win_file:
       path: "{{ pwshScriptHome }}"
@@ -20,9 +15,12 @@
     ansible.windows.win_copy:
       src: files/installDependencies.ps1
       dest: "{{ pwshScriptHome }}\\installDependencies.ps1"
-      backup: yes
-  - name: Copy AKS HCI Config powershell script
-    ansible.windows.win_copy:
-      src: config_aks_hci.ps1
+  - name: write aks env variables file
+    template:
+      src: aks_variables.ps1.j2
+      dest: "{{ pwshScriptHome }}\\aks_variables.ps1"
+  - name: write the aks config hci script to server
+    template:
+      src: config_aks_hci.ps1.j2
       dest: "{{ pwshScriptHome }}\\config_aks_hci.ps1"
-  
+

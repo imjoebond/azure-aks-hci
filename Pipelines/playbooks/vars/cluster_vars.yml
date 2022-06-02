@@ -23,13 +23,15 @@ aksDir: "{{ aksDrive }}\\AKS-HCI"
 imageDir: "{{ aksDir }}\\Images"
 #path to the directory where the cloud agent will store its configuration
 cloudConfigLocation: "{{ aksDir }}\\Config"
-#name for your AKS cluster
-clusterName: testCluster
+#name for your AKS cluster.  should be lower case
+clusterName: testarchciakscluster
+#name of node pool
+nodePoolName: testlinuxnodepool
 #number of Linux node VMs for your cluster
 linuxNodeCount: 2
-resourceGroup: AksHciAzureEval
+resourceGroup: 'aks-poc-resources'
 #Azure region to connect your Azure Arc enabled Kubernetes
-location: us-east-1
+location: centralus
 #subscription to connect your Azure Arc enabled Kubernetes
 subscriptionId: "{{ lookup('env', 'SUBSCRIPTION_ID') }}"
 #appID of the service principal created

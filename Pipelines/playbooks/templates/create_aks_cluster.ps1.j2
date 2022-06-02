@@ -1,27 +1,8 @@
 # PowerShell script to deploy an AKS cluster on HCI
 
 #Environment variables to set up your AKS on HCI cluster
+. ./aks_variables.ps1
 
-#name for your AKS cluster
-$clusterName = '{{ clusterName }}'.toLower()
-#name of node pool
-$nodePoolName='{{ nodePoolName }}'.toLower()
-#number of Linux node VMs for your cluster
-$linuxNodeCount = '{{ linuxNodeCount }}'
-
-#Environment variables to onboard the cluster on Azure Arc 
-#resource group to connect your Azure Arc enabled Kubernetes
-$resourceGroup = '{{ resourceGroup }}'
-#Azure region to connect your Azure Arc enabled Kubernetes
-$location = '{{ location }}'
-#subscription to connect your Azure Arc enabled Kubernetes
-$subscriptionId = '{{ subscriptionId }}'
-#appID of the service principal created
-$appId = '{{ appId }}'
-#password of the service principal created
-$password = '{{ service_principal_password }}'
-#tenantID
-$tenant = '{{ tenantId }}'
 
 $passwordsecure = ConvertTo-SecureString $password -AsPlainText -Force
 $pscredential = New-Object -TypeName System.Management.Automation.PSCredential($appId, $passwordsecure)

@@ -7,20 +7,19 @@
     - vars/cluster_vars.yml
 
   tasks:
-  - name:
-    delegate_to: localhost
-    template:
-      src: remove_aks_cluster.ps1.j2
-      dest: remove_aks_cluster.ps1
   - name: create script directory
     win_file:
       path: "{{ pwshScriptHome }}"
       state: directory
-  - name: write aks env variables file
+  - name: write aks variables file
     template:
       src: aks_variables.ps1.j2
       dest: "{{ pwshScriptHome }}\\aks_variables.ps1"
-  - name: Remove AKS Cluster powershell script
-    ansible.windows.win_copy:
-      src: remove_aks_cluster.ps1
+  - name: write remove aks cluster script to server
+    template:
+      src: remove_aks_cluster.ps1.j2
       dest: "{{ pwshScriptHome }}\\remove_aks_cluster.ps1"
+  - name: Remove AKS cluster
+    ansible.windows.win_shell: "{{ pwshScriptHome }}\\remove_aks_cluster.ps1 >> {{ pwshScriptHome }}\\remove_aks_cluster.txt"
+    args:
+      chdir: "{{ pwshScriptHome }}"

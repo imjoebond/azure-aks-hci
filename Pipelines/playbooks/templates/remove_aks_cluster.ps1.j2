@@ -5,9 +5,15 @@
 
 $passwordsecure = ConvertTo-SecureString $password -AsPlainText -Force
 $pscredential = New-Object -TypeName System.Management.Automation.PSCredential($appId, $passwordsecure)
+echo "connecting to azure account with appID: $appId"
 Connect-AzAccount -ServicePrincipal -Credential $pscredential -Tenant $tenant
+echo "connected to azure account with appID: $appId"
 
+echo "selecting subscription $subscriptionId"
 Select-AzSubscription -SubscriptionId $subscriptionId
+echo "selected subscription $subscriptionId"
 
-# Create a new cluster
-Remove-AksHciCluster -name $clusterName
+# remove cluster
+echo "removing cluster Name: $clusterName"
+Remove-AksHciCluster -name $clusterName -Confirm:$false
+echo "removed cluster Name: $clusterName"

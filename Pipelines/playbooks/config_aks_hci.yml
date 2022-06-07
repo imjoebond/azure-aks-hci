@@ -1,30 +1,35 @@
 - name: Configured Azure HCI AKS
   hosts: hcimanager
-  #connection: local
-  gather_facts: false
+  
 
   vars_files: 
     - vars/cluster_vars.yml
 
   tasks:
-  - name: create script directory
-    win_file:
-      path: "{{ pwshScriptHome }}"
-      state: directory
-  - name: write aks env variables file
-    template:
-      src: aks_variables.ps1.j2
-      dest: "{{ pwshScriptHome }}\\aks_variables.ps1"
+  
+  - include_tasks: tasks/install_dependencies.yml
+  
+  - name: check if log file exists
+    win_stat:
+      path: "{{ pwshScriptHome }}\\config_aks_hci.log"
+    register: log_file_name
+  
+  - name: build variables
+    include_tasks: tasks/build_variables_file.yml
+
   - name: write the aks config hci script to server
     template:
       src: config_aks_hci.ps1.j2
       dest: "{{ pwshScriptHome }}\\config_aks_hci.ps1"
-  - name: copy dependency file(may deprecate for install_dependencies.yml playbook)
-    ansible.windows.win_copy:
-      src: files/installDependencies.ps1
-      dest: "{{ pwshScriptHome }}\\installDependencies.ps1"
+  
+  - name: Move log file
+    ansible.windows.win_shell: "mv {{ pwshScriptHome }}\\config_aks_hci.log {{ pwshScriptHome }}\\config_aks_hci.{{ ansible_date_time.epoch }}.log"
+    args:
+      chdir: "{{ pwshScriptHome }}"
+    when: log_file_name.stat.exists
+
   - name: Install AksHci
-    ansible.windows.win_shell: "{{ pwshScriptHome }}\\config_aks_hci.ps1 >> {{ pwshScriptHome }}\\config_aks_hci.txt"
+    ansible.windows.win_shell: "{{ pwshScriptHome }}\\config_aks_hci.ps1 >> {{ pwshScriptHome }}\\config_aks_hci.log"
     args:
       chdir: "{{ pwshScriptHome }}"
 

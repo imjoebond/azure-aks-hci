@@ -1,0 +1,22 @@
+- name: create script directory
+  win_file:
+    path: "{{ pwshScriptHome }}"
+    state: directory
+- name: install base dependencies
+  ansible.windows.win_powershell:
+    script: |
+      Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted
+      Install-PackageProvider -Name NuGet -Force -Confirm:$false
+- name: Add PowerShellGet module
+  community.windows.win_psmodule:
+    name: PowershellGet
+    state: present
+- name: Add AksHci module
+  community.windows.win_psmodule:
+    name: AksHci
+    repository: PSGallery
+    state: present
+- name: create script directory
+  win_file:
+    path: "{{ pwshScriptHome }}"
+    state: directory

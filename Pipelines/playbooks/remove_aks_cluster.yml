@@ -1,25 +1,33 @@
 - name: Remove AKS Cluster
   hosts: hcimanager
-  #connection: local
-  gather_facts: false
-
+  
   vars_files: 
     - vars/cluster_vars.yml
 
   tasks:
-  - name: create script directory
-    win_file:
-      path: "{{ pwshScriptHome }}"
-      state: directory
-  - name: write aks variables file
-    template:
-      src: aks_variables.ps1.j2
-      dest: "{{ pwshScriptHome }}\\aks_variables.ps1"
+  - name: install dependencies
+    include_tasks: tasks/install_dependencies.yml
+  
+  - name: build variables
+    include_tasks: tasks/build_variables_file.yml
+
   - name: write remove aks cluster script to server
     template:
       src: remove_aks_cluster.ps1.j2
       dest: "{{ pwshScriptHome }}\\remove_aks_cluster.ps1"
+
+  - name: check if log file exists
+    win_stat:
+      path: "{{ pwshScriptHome }}\\remove_aks_cluster.log"
+    register: log_file_name
+
+  - name: Move log file
+    ansible.windows.win_shell: "mv {{ pwshScriptHome }}\\remove_aks_cluster.log {{ pwshScriptHome }}\\remove_aks_cluster.{{ ansible_date_time.epoch }}.log"
+    args:
+      chdir: "{{ pwshScriptHome }}"
+    when: log_file_name.stat.exists
+    
   - name: Remove AKS cluster
-    ansible.windows.win_shell: "{{ pwshScriptHome }}\\remove_aks_cluster.ps1 >> {{ pwshScriptHome }}\\remove_aks_cluster.txt"
+    ansible.windows.win_shell: "{{ pwshScriptHome }}\\remove_aks_cluster.ps1 >> {{ pwshScriptHome }}\\remove_aks_cluster.log"
     args:
       chdir: "{{ pwshScriptHome }}"

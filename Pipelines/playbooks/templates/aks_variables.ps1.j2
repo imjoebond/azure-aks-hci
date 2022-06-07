@@ -23,7 +23,7 @@ $imageDir = '{{ imageDir }}'
 $cloudConfigLocation = '{{ cloudConfigLocation }}'
 #name for your AKS cluster
 $clusterName = '{{ clusterName }}'.toLower()
-$nodePoolName = '{{ nodePoolName }}'.toLower()
+$nodePoolName = '{{ clusterName }}_nodepool'.toLower()
 #number of Linux node VMs for your cluster
 $nodeCount = '{{ nodeCount }}'
 $osType = '{{ osType }}'

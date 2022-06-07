@@ -1,0 +1,20 @@
+- name: Get AKS Clusters
+  hosts: hcimanager
+
+
+  vars_files: 
+    - vars/cluster_vars.yml
+
+  tasks:
+  - name: Get AKS Clusters
+    ansible.windows.win_shell:  "Get-AksHciCluster | ConvertTo-Json"
+    register: aks_cluster_info
+  
+  - name: set cluster info fact
+    set_fact:
+      cluster_info: "{{ aks_cluster_info.stdout | from_json  }}"
+  
+  - name: debug cluster info
+    debug:
+      msg: "cluster {{ cluster_info }}"
+      

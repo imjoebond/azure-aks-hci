@@ -25,10 +25,8 @@ imageDir: "{{ aksDir }}\\Images"
 cloudConfigLocation: "{{ aksDir }}\\Config"
 #name for your AKS cluster.  should be lower case
 clusterName: testarchciakscluster
-#name of node pool
-nodePoolName: testlinuxnodepool
 #number of Linux node VMs for your cluster
-nodeCount: 2
+nodeCount: 4
 osType: 'Linux'
 resourceGroup: 'aks-poc-resources'
 #Azure region to connect your Azure Arc enabled Kubernetes

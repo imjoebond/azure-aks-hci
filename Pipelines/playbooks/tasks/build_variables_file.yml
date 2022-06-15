@@ -1,4 +1,0 @@
-- name: write aks env variables file
-  template:
-    src: aks_variables.ps1.j2
-    dest: "{{ pwshScriptHome }}\\aks_variables.ps1"

@@ -1,5 +1,7 @@
 pwshScriptHome: "C:\\automation\\scripts"
 pwshScriptLogs: "{{ pwshScriptHome }}\\logs"
+install_win_dependencies: false
+
 vnetName: mgmtvnet
 #external vswitch name
 vSwitchName: InternalNAT

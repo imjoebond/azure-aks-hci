@@ -11,7 +11,6 @@
 - name: set remove log file name
   set_fact:
     remove_log_file_name: "remove_aks_workload_{{ clusterName }}_{{ansible_date_time.epoch}}.log"
-
   
 - name: Remove AKS cluster
   ansible.windows.win_shell: "{{ pwshScriptHome }}\\remove_aks_cluster.ps1 >> {{ pwshScriptLogs }}\\{{ remove_log_file_name }}"

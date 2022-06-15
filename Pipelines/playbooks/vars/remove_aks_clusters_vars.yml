@@ -1,10 +1,6 @@
 pwshScriptHome: "C:\\automation\\scripts"
 pwshScriptLogs: "{{ pwshScriptHome }}\\logs"
-aks_clusters:
-  - testarchciakscluster
-  
-
-
+install_win_dependencies: false
 
 resourceGroup: 'aks-poc-resources'
 #Azure region to connect your Azure Arc enabled Kubernetes
@@ -18,3 +14,5 @@ service_principal_password: "{{ lookup('env', 'CLIENT_SECRET') }}"
 #tenantID
 tenantId: "{{ lookup('env', 'TENANT_ID') }}"
 
+aks_clusters:
+  - testarchciakscluster

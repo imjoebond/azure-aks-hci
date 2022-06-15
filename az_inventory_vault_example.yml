@@ -1,4 +1,5 @@
 #Example of ansible-vault encrypted user and pass
+#https://docs.ansible.com/ansible/latest/user_guide/vault.html
 #ansible -i az_inventory_vault_example.yml hcimgmt_server -m win_ping --vault-password-file ~/.vault_password -vvvv
 #need to run the command below on mgmt server to allow basic auth
 #winrm set winrm/config/Client '@{AllowUnencrypted = "true"}'

@@ -1,7 +1,7 @@
 # PowerShell script to deploy an AKS cluster on HCI
 
 #Environment variables to set up your AKS on HCI cluster
-. ./aks_variables.ps1
+. ./create_cluster_variables.ps1
 
 
 $passwordsecure = ConvertTo-SecureString $password -AsPlainText -Force
@@ -18,6 +18,7 @@ echo "selected subscription $subscriptionId"
 # Create a new cluster
 echo "creating new cluster Name: $clusterName nodePoolName: $nodePoolName nodeCount: $nodeCount osType: $osType"
 New-AksHciCluster -name $clusterName -nodePoolName $nodePoolName -nodeCount $nodeCount -osType $osType
+#-kubernetesVersion $kubeVersion
 echo "created new cluster Name: $clusterName nodePoolName: $nodePoolName nodeCount: $nodeCount osType: $osType"
 
 echo "getting akshci credentials for clusterName: $clusterName"

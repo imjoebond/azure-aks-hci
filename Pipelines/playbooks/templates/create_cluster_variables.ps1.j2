@@ -1,0 +1,23 @@
+#Environment variables to set up your AKS Workload Cluster 
+
+#name for your AKS cluster
+$clusterName = '{{ cluster.clusterName }}'.toLower()
+$nodePoolName = '{{ cluster.clusterName }}-nodepool'.toLower()
+#number of Linux node VMs for your cluster
+$nodeCount = '{{ cluster.nodeCount }}'
+$osType = '{{ cluster.osType }}'
+
+#Environment variables to onboard the cluster on Azure Arc 
+#resource group to connect your Azure Arc enabled Kubernetes
+$resourceGroup = '{{ resourceGroup }}'
+#Azure region to connect your Azure Arc enabled Kubernetes
+$location = '{{ location }}'
+#subscription to connect your Azure Arc enabled Kubernetes
+$subscriptionId = '{{ subscriptionId }}'
+#appID of the service principal created
+$appId = '{{ appId }}'
+#password of the service principal created
+$password = '{{ service_principal_password }}'
+#tenantID
+$tenant = '{{ tenantId }}'
+

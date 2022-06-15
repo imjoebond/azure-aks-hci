@@ -1,4 +1,5 @@
-pwshScriptHome: "C:\\temp\\scripts"
+pwshScriptHome: "C:\\automation\\scripts"
+pwshScriptLogs: "{{ pwshScriptHome }}\\logs"
 vnetName: mgmtvnet
 #external vswitch name
 vSwitchName: InternalNAT

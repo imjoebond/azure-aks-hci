@@ -3,7 +3,7 @@
   
 
   vars_files: 
-    - vars/cluster_vars.yml
+    - vars/config_aks_setup_vars.yml
 
   tasks:
   
@@ -14,16 +14,22 @@
       path: "{{ pwshScriptHome }}\\config_aks_hci.log"
     register: log_file_name
   
-  - name: build variables
-    include_tasks: tasks/build_variables_file.yml
+  - name: write aks env variables file
+    template:
+      src: config_aks_variables.ps1.j2
+      dest: "{{ pwshScriptHome }}\\config_aks_variables.ps1"
 
   - name: write the aks config hci script to server
     template:
       src: config_aks_hci.ps1.j2
       dest: "{{ pwshScriptHome }}\\config_aks_hci.ps1"
   
+- name: set create log file name
+  set_fact:
+    config_aks_log_file_name: "config_aks_hci_{{ansible_date_time.epoch}}.log"
+  
   - name: Move log file
-    ansible.windows.win_shell: "mv {{ pwshScriptHome }}\\config_aks_hci.log {{ pwshScriptHome }}\\config_aks_hci.{{ ansible_date_time.epoch }}.log"
+    ansible.windows.win_shell: "mv {{ pwshScriptHome }}\\config_aks_hci.log {{ pwshScriptHome }}\\{{ config_aks_log_file_name}}"
     args:
       chdir: "{{ pwshScriptHome }}"
     when: log_file_name.stat.exists

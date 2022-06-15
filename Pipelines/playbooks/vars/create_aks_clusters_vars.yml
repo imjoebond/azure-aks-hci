@@ -1,0 +1,21 @@
+pwshScriptHome: "C:\\automation\\scripts"
+pwshScriptLogs: "{{ pwshScriptHome }}\\logs"
+aks_clusters:
+  - clusterName: testarchciakscluster
+    nodeCount: 4
+    osType: 'Linux'
+
+
+
+resourceGroup: 'aks-poc-resources'
+#Azure region to connect your Azure Arc enabled Kubernetes
+location: centralus
+#subscription to connect your Azure Arc enabled Kubernetes
+subscriptionId: "{{ lookup('env', 'SUBSCRIPTION_ID') }}"
+#appID of the service principal created
+appId: "{{ lookup('env', 'APP_ID') }}"
+#password of the service principal created
+service_principal_password: "{{ lookup('env', 'CLIENT_SECRET') }}"
+#tenantID
+tenantId: "{{ lookup('env', 'TENANT_ID') }}"
+

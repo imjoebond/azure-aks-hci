@@ -2,6 +2,10 @@
   win_file:
     path: "{{ pwshScriptHome }}"
     state: directory
+- name: create log directory
+  win_file:
+    path: "{{ pwshScriptLogs }}"
+    state: directory
 - name: install base dependencies
   ansible.windows.win_powershell:
     script: |
@@ -10,6 +14,21 @@
 - name: Add PowerShellGet module
   community.windows.win_psmodule:
     name: PowershellGet
+    state: present
+- name: Add AZ-Accounts module
+  community.windows.win_psmodule:
+    name: Az.Accounts
+    repository: PSGallery
+    state: present
+- name: Add Az.Resources module
+  community.windows.win_psmodule:
+    name: Az.Resources
+    repository: PSGallery
+    state: present
+- name: Add AzureAD module
+  community.windows.win_psmodule:
+    name: AzureAD
+    repository: PSGallery
     state: present
 - name: Add AksHci module
   community.windows.win_psmodule:

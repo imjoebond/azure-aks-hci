@@ -1,0 +1,20 @@
+- name: Remove AKS Clusters
+  hosts: hcimanager
+  
+
+  vars_files: 
+    - vars/remove_aks_clusters_vars.yml
+
+  tasks:
+  - name: install dependencies
+    include_tasks: tasks/install_dependencies.yml
+
+  - name: Remove AKS Clusters
+    include_tasks: tasks/remove_cluster.yml
+    with_items: "{{ aks_clusters }}"
+    loop_control:
+      loop_var: clusterName
+  
+  
+  
+      

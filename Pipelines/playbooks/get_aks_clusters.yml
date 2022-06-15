@@ -3,7 +3,7 @@
 
 
   vars_files: 
-    - vars/cluster_vars.yml
+    - vars/aks_setup_vars.yml
 
   tasks:
   - name: Get AKS Clusters
@@ -13,8 +13,15 @@
   - name: set cluster info fact
     set_fact:
       cluster_info: "{{ aks_cluster_info.stdout | from_json  }}"
+    when: aks_cluster_info.stdout
   
-  - name: debug cluster info
+  - name: print cluster info
     debug:
       msg: "cluster {{ cluster_info }}"
+    when: cluster_info is defined
+  
+  - name: print no clusters found
+    debug:
+      msg: "No clusters found on node"
+    when: cluster_info is undefined
       

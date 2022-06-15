@@ -1,0 +1,38 @@
+#Example of ansible-vault encrypted user and pass
+#ansible -i az_inventory_vault_example.yml hcimgmt_server -m win_ping --vault-password-file ~/.vault_password -vvvv
+#need to run the command below on mgmt server to allow basic auth
+#winrm set winrm/config/Client '@{AllowUnencrypted = "true"}'
+#winrm set winrm/config/Service '@{AllowUnencrypted = "true"}'
+#winrm set winrm/config/Service/Auth '@{Basic = "true"}'
+
+all:
+  children:
+    hcimanager:
+      hosts:
+        hcimgmt_server:
+          ansible_host: azurehost.fqdn
+          ansible_port: 5985
+          #value of .vault_password never to be checked in or shared 'BwzyXUfHa2'
+          #ansible-vault encrypt_string --vault-password-file ~/.vault_password 'foo_user' --name 'ansible_user'
+          ansible_user: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            35613963323238303134333166383939633565343761623561313634633530616563353537653839
+            6563303839326264383761613365373762653064633138610a613630323961633737663966376435
+            32303663333532333439396237646639633439333336343436376637323232326264333465333132
+            6663626434306164310a343436366164663565636664383230623731633065623932356434386431
+            6434
+          #ansible-vault encrypt_string --vault-password-file ~/.vault_password 'foopassword' --name 'ansible_password'
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            66656334646166623930313737646361373933303534616332303465346366663333393964306566
+            6361346632313134326138343131646464323161363831610a613635373930666631623636336237
+            38393437333034323662373835313636633632343435353266616437336163353737633632613832
+            3965313632666437320a303365393236613935623936366164363838343037356438383766643262
+            3965
+          ansible_connection: winrm
+          ansible_winrm_transport: credssp
+          #ansible_winrm_transport: certificate
+          #ansible_winrm_cert_pem: /home/joe/keys/cert.pem
+          #ansible_winrm_cert_key_pem: /home/joe/keys/cert.key
+          #ansible_winrm_transport: basic
+          #ansible_winrm_server_cert_validation: ignore

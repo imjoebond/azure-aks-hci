@@ -1,0 +1,18 @@
+- name: Check whether vhdx already exists
+  win_stat:
+    path: "{{vm.dest_vhd}}"
+    get_checksum: false
+  register: file_info
+
+- name: Poweroff VM
+  win_hyperv_guest:
+    name: "{{vm.name}}"
+    state: stopped 
+  when: file_info.stat.exists 
+
+- name: Delete VM
+  win_hyperv_guest:
+    name: "{{vm.name}}"
+    state: absent
+  register: deleted_vms
+

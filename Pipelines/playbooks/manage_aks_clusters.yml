@@ -1,0 +1,28 @@
+- name: Manage AKS Cluster
+  hosts: hcimanager
+  
+  vars_files: 
+    - vars/required_vars.yml
+    - vars/manage_aks_clusters_vars.yml
+
+  tasks:
+  - name: install dependencies
+    include_tasks: tasks/install_dependencies.yml
+
+  - name: Modify AKS Clusters
+    include_tasks: tasks/modify_cluster.yml
+    with_items: "{{ aks_clusters }}"
+    when: cluster.state == 'present'
+    loop_control:
+      loop_var: cluster
+  
+  - name: Remove AKS Clusters
+    include_tasks: tasks/remove_cluster.yml
+    with_items: "{{ aks_clusters }}"
+    when: cluster.state == 'absent'
+    loop_control:
+      loop_var: cluster
+  
+  
+  
+      

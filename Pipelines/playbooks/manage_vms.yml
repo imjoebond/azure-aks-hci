@@ -1,0 +1,27 @@
+- name: Manage Hyper-V VMs
+  hosts: hcimanager
+  
+  vars_files: 
+    - vars/manage_hci_vms_vars.yml
+
+  tasks:
+  - name: install dependencies
+    include_tasks: tasks/install_dependencies.yml
+
+  - name: Create VMs
+    include_tasks: tasks/create_vm.yml
+    with_items: "{{ hci_vms }}"
+    when: vm.state == 'present'
+    loop_control:
+      loop_var: vm
+
+  - name: Delete VMs
+    include_tasks: tasks/delete_vm.yml
+    with_items: "{{ hci_vms }}"
+    when: vm.state == 'absent'
+    loop_control:
+      loop_var: vm
+  
+  
+  
+      

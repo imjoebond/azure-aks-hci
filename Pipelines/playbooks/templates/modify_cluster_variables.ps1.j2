@@ -2,8 +2,11 @@
 
 #name for your AKS cluster
 $clusterName = '{{ cluster.clusterName }}'.toLower()
+$controlPlaneNodeCount = '{{ cluster.controlPlaneNodeCount | default(defaultControlPlaneNodeCount) }}'
+$kubernetesVersion = '{{ cluster.kubernetesVersion | default(defaultKubernetesVersion) }}'
 $nodePoolName = '{{ cluster.clusterName }}-nodepool'.toLower()
-#number of Linux node VMs for your cluster
+$arcEnabled=${{arcEnabled}}
+#number of worker nodes for your cluster
 $nodeCount = '{{ cluster.nodeCount }}'
 $osType = '{{ cluster.osType }}'
 

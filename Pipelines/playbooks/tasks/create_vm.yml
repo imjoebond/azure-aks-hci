@@ -1,0 +1,43 @@
+- name: create HD Directory
+  win_file:
+    path: "{{ vhdDir }}"
+    state: directory
+
+- name: Check whether vhdx already exists
+  win_stat:
+    path: "{{vm.dest_vhd}}"
+    get_checksum: false
+  register: file_info
+
+- name: Clone vhdx 
+  win_copy:
+    src: "{{vm.src_vhd}}"
+    dest: "{{vm.dest_vhd}}"
+    remote_src: True
+  when: file_info.stat.exists == false
+  
+
+- name: Create VM
+  win_hyperv_guest:
+    name: "{{vm.name}}"
+    generation: "{{vm.defaut_generation}}"
+    cpu: "{{vm.cpu}}"
+    memory: "{{vm.memory}}"
+    network_switch: "{{vm.network_switch}}"
+    diskpath: "{{vm.dest_vhd}}"
+    state: present
+  register: new_vms
+
+- name: Configure VM IP
+  win_hyperv_guest_config_net:
+    name: "{{vm.name}}"
+    ip: "{{vm.network.ip}}" 
+    netmask: "{{vm.network.netmask}}"
+    gateway: "{{vm.network.gateway}}"
+    dns: "{{vm.network.dns}}"
+    type: static
+
+- name: Poweron VM
+  win_hyperv_guest:
+    name: "{{vm.name}}"
+    state: started 

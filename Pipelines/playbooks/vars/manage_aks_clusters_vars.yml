@@ -1,0 +1,14 @@
+aks_clusters:
+  - clusterName: testarchciakscluster1
+    state: present
+    nodeCount: 2
+    osType: 'Linux'
+  - clusterName: testarchciakscluster2
+    state: present
+    nodeCount: 1
+    osType: 'Windows'
+
+
+
+
+

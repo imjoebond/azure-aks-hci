@@ -1,0 +1,22 @@
+- name: set cluster info fact
+  set_fact:
+    cluster_exists: false
+  
+- name: Get AKS Clusters
+  ignore_errors: True
+  ansible.windows.win_shell:  "Get-AksHciCluster {{ cluster.clusterName }}| ConvertTo-Json"
+  register: aks_cluster_info
+
+- name: set cluster info fact
+  set_fact:
+    cluster_exists: true
+  when: aks_cluster_info.stdout
+
+- name: create cluster
+  include_tasks: create_cluster.yml
+  when: cluster_exists == false
+
+- name: update cluster
+  include_tasks: update_cluster.yml
+  when: cluster_exists
+

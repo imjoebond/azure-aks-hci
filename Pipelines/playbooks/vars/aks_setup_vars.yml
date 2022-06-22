@@ -1,6 +1,3 @@
-pwshScriptHome: "C:\\automation\\scripts"
-pwshScriptLogs: "{{ pwshScriptHome }}\\logs"
-install_win_dependencies: false
 
 vnetName: mgmtvnet
 #external vswitch name
@@ -26,19 +23,3 @@ aksDir: "{{ aksDrive }}\\AKS-HCI"
 imageDir: "{{ aksDir }}\\Images"
 #path to the directory where the cloud agent will store its configuration
 cloudConfigLocation: "{{ aksDir }}\\Config"
-#name for your AKS cluster.  should be lower case
-clusterName: testarchciakscluster
-#number of Linux node VMs for your cluster
-nodeCount: 4
-osType: 'Linux'
-resourceGroup: 'aks-poc-resources'
-#Azure region to connect your Azure Arc enabled Kubernetes
-location: centralus
-#subscription to connect your Azure Arc enabled Kubernetes
-subscriptionId: "{{ lookup('env', 'SUBSCRIPTION_ID') }}"
-#appID of the service principal created
-appId: "{{ lookup('env', 'APP_ID') }}"
-#password of the service principal created
-service_principal_password: "{{ lookup('env', 'CLIENT_SECRET') }}"
-#tenantID
-tenantId: "{{ lookup('env', 'TENANT_ID') }}"

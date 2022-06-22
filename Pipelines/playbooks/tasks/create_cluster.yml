@@ -1,7 +1,7 @@
 - name: write aks env variables file
   template:
-    src: create_cluster_variables.ps1.j2
-    dest: "{{ pwshScriptHome }}\\create_cluster_variables.ps1"
+    src: modify_cluster_variables.ps1.j2
+    dest: "{{ pwshScriptHome }}\\modify_cluster_variables.ps1"
   
 - name: write create aks cluster script to server
   ansible.windows.win_copy:

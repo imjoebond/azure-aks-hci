@@ -3,6 +3,7 @@
   
 
   vars_files: 
+    - vars/required_vars.yml
     - vars/config_aks_setup_vars.yml
 
   tasks:

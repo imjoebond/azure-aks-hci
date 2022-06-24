@@ -25,10 +25,10 @@
       src: config_aks_hci.ps1.j2
       dest: "{{ pwshScriptHome }}\\config_aks_hci.ps1"
   
-- name: set create log file name
-  set_fact:
-    config_aks_log_file_name: "config_aks_hci_{{ansible_date_time.epoch}}.log"
-  
+  - name: set create log file name
+    set_fact:
+      config_aks_log_file_name: "config_aks_hci_{{ansible_date_time.epoch}}.log"
+    
   - name: Move log file
     ansible.windows.win_shell: "mv {{ pwshScriptHome }}\\config_aks_hci.log {{ pwshScriptHome }}\\{{ config_aks_log_file_name}}"
     args:

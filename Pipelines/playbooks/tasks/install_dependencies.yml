@@ -13,38 +13,15 @@
     script: |
       Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted
       Install-PackageProvider -Name NuGet -Force -Confirm:$false
+      Install-Module -Name PowershellGet -Force -Confirm:$false
   when: install_win_dependencies
 
-- name: Add PowerShellGet module
-  community.windows.win_psmodule:
-    name: PowershellGet
-    state: present
+
+- name: install AksHCI dependencies
+  ansible.windows.win_powershell:
+    script: |
+      Install-Module -Name AksHci -Repository PSGallery -AcceptLicense -Force -Confirm:$false
   when: install_win_dependencies
 
-- name: Add AZ-Accounts module
-  community.windows.win_psmodule:
-    name: Az.Accounts
-    repository: PSGallery
-    state: present
-  when: install_win_dependencies
 
-- name: Add Az.Resources module
-  community.windows.win_psmodule:
-    name: Az.Resources
-    repository: PSGallery
-    state: present
-  when: install_win_dependencies
 
-- name: Add AzureAD module
-  community.windows.win_psmodule:
-    name: AzureAD
-    repository: PSGallery
-    state: present
-  when: install_win_dependencies
-
-- name: Add AksHci module
-  community.windows.win_psmodule:
-    name: AksHci
-    repository: PSGallery
-    state: present
-  when: install_win_dependencies

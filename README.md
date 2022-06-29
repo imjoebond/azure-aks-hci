@@ -97,16 +97,10 @@ ansible -i az_inventory.yml hcimgmt_server -m win_ping
 ```
 Test creating clusters defined in [Pipelines/playbooks/vars/manage_aks_clusters_vars.yml](Pipelines/playbooks/vars/manage_aks_clusters_vars.yml).
 ```
-ansible-playbook -i az_inventory.yml Pipelines/playbooks/manage_aks_clusters.yml -vvv
+ansible-playbook -i az_inventory.yml Pipelines/playbooks/manage_aks_clusters.yml 
 ```
 References
 -----------
 - [Azure Arc Jumpstart](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_k8s/aks_stack_hci/aks_hci_powershell/)
 
-## Testing authentication
-`ansible -i az_inventory.yml hcimgmt_server -m win_ping`
 
-##Create an AKS Workload cluster as defined in [vars/cluster_vars.yml](vars/cluster_vars.yml)
-`ansible-playbook -i az_inventory.yml Pipelines/playbooks/create_aks_clusters.yml`
-##Destroy an AKS cluster
-`ansible-playbook -i az_inventory.yml Pipelines/playbooks/remove_aks_clusters.yml`

@@ -95,12 +95,20 @@ Testing authentication
 ```
 ansible -i az_inventory.yml hcimgmt_server -m win_ping
 ```
-Test creating clusters defined in [Pipelines/playbooks/vars/manage_aks_clusters_vars.yml](Pipelines/playbooks/vars/manage_aks_clusters_vars.yml).
+Test managing(create, update, delete) clusters defined in [Pipelines/playbooks/vars/manage_aks_clusters_vars.yml](Pipelines/playbooks/vars/manage_aks_clusters_vars.yml).
 ```
 ansible-playbook -i az_inventory.yml Pipelines/playbooks/manage_aks_clusters.yml 
 ```
+
+Notes
+-----------
+The user that installed the aks hci software is bound to it for administration unless you [setup another admin user](https://docs.microsoft.com/en-us/azure-stack/aks-hci/set-multiple-administrators).  Advise the installer to use a service account instead of an individual user to avoid having the installation bound to individuals.  These commands should be run on the cluster owner which can be determined by the command below from an aks hci node.  This is not necessary in a test single node cluster.
+
+```
+Get-ClusterResource ca* | select name, OwnerNode
+```
+
 References
 -----------
 - [Azure Arc Jumpstart](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_k8s/aks_stack_hci/aks_hci_powershell/)
-
-
+- [Evaluate AKS on Azure Stack HCI in Azure](https://github.com/Azure/aks-hci/blob/main/eval/steps/1_AKSHCI_Azure.md)  

@@ -11,6 +11,7 @@ Contents
 - [Install Dependencies](#install-dependencies)
 - [Configure Runtime](#configure-runtime)
 - [Usage](#usage)
+- [Notes](#notes)
 - [References](#references)
 
 Install Dependencies
@@ -61,11 +62,11 @@ aks_clusters:
     nodeCount: 1
     osType: 'Linux'
   - clusterName: testarchciakscluster2
-    state: present #absent indicates that the cluster should be removed
+    state: present 
     nodeCount: 2
     osType: 'Windows'
   - clusterName: testarchciakscluster3
-    state: present 
+    state: absent #absent indicates that the cluster should be removed
     nodeCount: 1
     osType: 'Windows'
 ```
@@ -95,9 +96,13 @@ Testing authentication
 ```
 ansible -i az_inventory.yml hcimgmt_server -m win_ping
 ```
-Test managing(create, update, delete) clusters defined in [Pipelines/playbooks/vars/manage_aks_clusters_vars.yml](Pipelines/playbooks/vars/manage_aks_clusters_vars.yml).
+Test creating clusters defined in [Pipelines/playbooks/vars/manage_aks_clusters_vars.yml](Pipelines/playbooks/vars/manage_aks_clusters_vars.yml).
 ```
-ansible-playbook -i az_inventory.yml Pipelines/playbooks/manage_aks_clusters.yml 
+ansible-playbook -i az_inventory.yml Pipelines/playbooks/manage_aks_clusters.yml
+```
+if you are using ansible-vault to encrypt ansible variables the command below can be used along with the vault-password file.  The contents of .vault_password file will have the value that was used to encrypt the vault variables.
+```
+ansible-playbook -i az_inventory_vault_example.yml Pipelines/playbooks/manage_aks_clusters.yml --vault-password-file ~/.vault_password
 ```
 
 Notes
@@ -111,4 +116,5 @@ Get-ClusterResource ca* | select name, OwnerNode
 References
 -----------
 - [Azure Arc Jumpstart](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_k8s/aks_stack_hci/aks_hci_powershell/)
-- [Evaluate AKS on Azure Stack HCI in Azure](https://github.com/Azure/aks-hci/blob/main/eval/steps/1_AKSHCI_Azure.md)  
+- [Evaluate AKS on Azure Stack HCI in Azure](https://github.com/Azure/aks-hci/blob/main/eval/steps/1_AKSHCI_Azure.md)
+

@@ -16,3 +16,9 @@
     state: absent
   register: deleted_vms
 
+- name: Delete VM from Disk
+  win_file:
+    path: "{{vm.dest_vhd}}"
+    state: absent
+  register: deleted_files
+

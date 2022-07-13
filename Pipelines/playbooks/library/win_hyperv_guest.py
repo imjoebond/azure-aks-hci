@@ -67,6 +67,11 @@ options:
 	  - If the file exists it will be attached, if not then a new one will be created
     require: false
     default: null
+  vm_config_path
+    description:
+      - Specifies the directory to store the files for the new VM.
+    require: false
+    default: null
 '''
 
 EXAMPLES = '''

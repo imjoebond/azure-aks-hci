@@ -25,8 +25,18 @@
     memory: "{{vm.memory}}"
     network_switch: "{{vm.network_switch}}"
     diskpath: "{{vm.dest_vhd}}"
+    vm_config_path: "{{vm.vm_config_path}}"
     state: present
   register: new_vms
+
+- name: print vm results
+  debug: 
+    msg: "results are {{new_vms}}"
+
+- name: install AksHCI dependencies
+  ansible.windows.win_powershell:
+    script: |
+      "Add-ClusterVirtualMachineRole -VirtualMachine {{vm.name}}"
 
 - name: Configure VM IP
   win_hyperv_guest_config_net:
@@ -36,6 +46,7 @@
     gateway: "{{vm.network.gateway}}"
     dns: "{{vm.network.dns}}"
     type: static
+  when: vm.network is defined
 
 - name: Poweron VM
   win_hyperv_guest:

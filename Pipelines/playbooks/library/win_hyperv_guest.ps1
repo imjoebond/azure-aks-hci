@@ -32,6 +32,8 @@ $network_switch = Get-Attr -obj $params -name network_switch -default $null
 
 $diskpath = Get-Attr -obj $params -name diskpath -default $null
 
+$vm_config_path = Get-Attr -obj $params -name vm_config_path -default $null
+
 $showlog = Get-Attr -obj $params -name showlog -default "true" | ConvertTo-Bool
 $state = Get-Attr -obj $params -name state -default "present"
 
@@ -70,8 +72,14 @@ Function VM-Create {
           $cmd += " -NewVHDPath '$diskpath'"
         }
       }
+    
+      if ($vm_config_path) {
+        $cmd += " -Path '$vm_config_path'"
+        
+        }
 
       # Need to chain these
+      
       $results = invoke-expression $cmd
       $results = invoke-expression "Set-VMProcessor $name -Count $cpu"
 

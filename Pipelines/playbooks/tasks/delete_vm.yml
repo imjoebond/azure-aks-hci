@@ -1,6 +1,6 @@
 - name: Check whether vhdx already exists
   win_stat:
-    path: "{{vm.dest_vhd}}"
+    path: "{{ vhdDir }}\\{{ vm.name }}\\{{vm.name}}.vhdx"
     get_checksum: false
   register: file_info
 
@@ -18,7 +18,7 @@
 
 - name: Delete VM from Disk
   win_file:
-    path: "{{vm.dest_vhd}}"
+    path: "{{ vhdDir }}\\{{ vm.name }}\\{{vm.name}}.vhdx"
     state: absent
   register: deleted_files
 

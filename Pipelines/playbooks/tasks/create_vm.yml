@@ -38,20 +38,10 @@
   debug: 
     msg: "results are {{new_vms}}"
 
-- name: install AksHCI dependencies
+- name: add vm cluster role
   ansible.windows.win_powershell:
     script: |
       "Add-ClusterVirtualMachineRole -VirtualMachine {{vm.name}}"
-
-- name: Configure VM IP
-  win_hyperv_guest_config_net:
-    name: "{{vm.name}}"
-    ip: "{{vm.network.ip}}" 
-    netmask: "{{vm.network.netmask}}"
-    gateway: "{{vm.network.gateway}}"
-    dns: "{{vm.network.dns}}"
-    type: static
-  when: vm.network is defined
 
 - name: Poweron VM
   win_hyperv_guest:

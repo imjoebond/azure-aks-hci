@@ -1,0 +1,4 @@
+- name: add vm cluster role
+  ansible.windows.win_powershell:
+    script: |
+      "Add-ClusterVirtualMachineRole -VMName {{vm.name}}"

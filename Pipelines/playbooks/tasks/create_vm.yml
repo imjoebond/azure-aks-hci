@@ -38,11 +38,6 @@
   debug: 
     msg: "results are {{new_vms}}"
 
-- name: add vm cluster role
-  ansible.windows.win_powershell:
-    script: |
-      "Add-ClusterVirtualMachineRole -VMName {{vm.name}}"
-
 - name: Poweron VM
   win_hyperv_guest:
     name: "{{vm.name}}"

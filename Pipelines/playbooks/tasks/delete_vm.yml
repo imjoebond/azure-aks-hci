@@ -10,6 +10,9 @@
     state: stopped 
   when: file_info.stat.exists 
 
+- name: remove vm cluster role
+  ansible.windows.win_shell: "Remove-ClusterGroup -VMId (Get-VM -Name {{vm.name}}).VMId -RemoveResources -Force "
+
 - name: Delete VM
   win_hyperv_guest:
     name: "{{vm.name}}"

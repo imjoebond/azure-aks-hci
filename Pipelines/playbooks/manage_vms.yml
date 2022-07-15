@@ -18,9 +18,12 @@
   - name: Add cluster role
     include_tasks: tasks/add_vm_cluster_role.yml
     with_items: "{{ hci_vms }}"
-    when: vm.state == 'present'
+    when: 
+      - vm.state == 'present'
+      - vm.cluster
     loop_control:
       loop_var: vm
+
 
   - name: Delete VMs
     include_tasks: tasks/delete_vm.yml

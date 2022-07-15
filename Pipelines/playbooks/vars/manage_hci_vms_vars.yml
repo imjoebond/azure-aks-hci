@@ -1,28 +1,20 @@
 pwshScriptHome: "C:\\automation\\scripts"
 pwshScriptLogs: "{{ pwshScriptHome }}\\logs"
 vmDrive: "V:\\"
-imageDir: "{{ vmDrive }}vm-images"
-vhdDir: "{{ vmDrive }}VMs\\VirtualHardDisks"
+imageDir: "VMs\\Templates"
+vm_config_path: "V:\\VMs"
 install_win_dependencies: false
 
 hci_vms:
-  - type: web
+  - name: "web-1"
     state: present
-    name: "web-1"
+    type: dhcp
     defaut_generation: 1
     cpu: 2   
     memory: 4096MB
-    vm_config_path: "V:\\VMs"
-
-    network:
-      ip: 192.168.0.230
-      netmask: 255.255.255.0
-      gateway: 192.168.0.1
-      dns: 192.168.0.212
-      
     network_switch: "InternalNAT"
-
-    src_vhd: "V:\\VMs\\ubuntu.vhdx"
+    src_vhd: "{{imageDir}}\\ubuntu.vhdx"
+    cluster: false
   
 
 

@@ -1,6 +1,6 @@
 - name: Check whether vhdx already exists
   win_stat:
-    path: "{{ vm.vm_config_path }}\\{{ vm.name }}\\virtual\ hard\ drives\\{{vm.name}}.vhdx"
+    path: "{{ vm_config_path }}\\{{ vm.name }}\\virtual\ hard\ drives\\{{vm.name}}.vhdx"
     get_checksum: false
   register: file_info
 
@@ -11,7 +11,9 @@
   when: file_info.stat.exists 
 
 - name: remove vm cluster role
-  ansible.windows.win_shell: "Remove-ClusterGroup -VMId (Get-VM -Name {{vm.name}}).VMId -RemoveResources -Force "
+  ansible.windows.win_shell: "Remove-ClusterGroup -VMId (Get-VM -Name {{vm.name}}).VMId -RemoveResources -Force"
+  when: vm.cluster
+
 
 - name: Delete VM
   win_hyperv_guest:
@@ -21,7 +23,7 @@
 
 - name: Delete VM from Disk
   win_file:
-    path: "{{ vm.vm_config_path }}\\{{ vm.name }}"
+    path: "{{ vm_config_path }}\\{{ vm.name }}"
     state: absent
   register: deleted_files
 

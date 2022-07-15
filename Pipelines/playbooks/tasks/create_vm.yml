@@ -1,23 +1,18 @@
-- name: create HD Directory
-  win_file:
-    path: "{{ vhdDir }}"
-    state: directory
-
 - name: create vm HD Directory
   win_file:
-    path: "{{ vhdDir }}\\{{ vm.name }}"
+    path: "{{ vm.vm_config_path }}\\{{ vm.name }}\\virtual\ hard\ drives"
     state: directory
 
 - name: Check whether vhdx already exists
   win_stat:
-    path: "{{ vhdDir }}\\{{ vm.name }}\\{{vm.name}}.vhdx"
+    path: "{{ vm.vm_config_path }}\\{{ vm.name }}\\virtual\ hard\ drives\\{{vm.name}}.vhdx"
     get_checksum: false
   register: file_info
 
 - name: Clone vhdx 
   win_copy:
     src: "{{vm.src_vhd}}"
-    dest: "{{ vhdDir }}\\{{ vm.name }}\\{{vm.name}}.vhdx"
+    dest: "{{ vm.vm_config_path }}\\{{ vm.name }}\\virtual\ hard\ drives\\{{vm.name}}.vhdx"
     remote_src: True
   when: file_info.stat.exists == false
   
@@ -29,7 +24,7 @@
     cpu: "{{vm.cpu}}"
     memory: "{{vm.memory}}"
     network_switch: "{{vm.network_switch}}"
-    diskpath: "{{ vhdDir }}\\{{ vm.name }}\\{{vm.name}}.vhdx"
+    diskpath: "{{ vm.vm_config_path }}\\{{ vm.name }}\\virtual\ hard\ drives\\{{vm.name}}.vhdx"
     vm_config_path: "{{vm.vm_config_path}}"
     state: present
   register: new_vms

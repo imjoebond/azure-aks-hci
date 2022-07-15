@@ -12,6 +12,7 @@ hci_vms:
     defaut_generation: 1
     cpu: 2   
     memory: 4096MB
+    vm_config_path: "V:\\VMs"
 
     network:
       ip: 192.168.0.230
@@ -21,25 +22,8 @@ hci_vms:
       
     network_switch: "InternalNAT"
 
-    src_vhd: "{{ imageDir }}\\ubuntu_18.04.vhdx"
-    dest_vhd: "{{ vhdDir }}\\web-1.vhdx"
+    src_vhd: "V:\\VMs\\ubuntu.vhdx"
   
-  - type: db
-    state: present
-    name: "db-1"
-    defaut_generation: 1
-    cpu: 2   
-    memory: 4096MB
 
-    network:
-      ip: 192.168.0.231
-      netmask: 255.255.255.0
-      gateway: 192.168.0.1
-      dns: 192.168.0.212
-      
-    network_switch: 'InternalNAT'
-
-    src_vhd: "{{ imageDir }}\\ubuntu_18.04.vhdx"
-    dest_vhd: "{{ vhdDir }}\\db-1.vhdx"
 
   
